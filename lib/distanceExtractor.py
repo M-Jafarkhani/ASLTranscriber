@@ -1,5 +1,5 @@
 import os
-from lib.util import calculate_distance
+from lib.util import calculate_distance, printProgressBar
 from lib.util import LABELS
 import pandas as pd
 
@@ -23,9 +23,11 @@ class DistanceExtractor:
 
     def extract(self):
         for label_index, label in LABELS.items():
+            progress_prefix = f'Calculating Distance for class ({label.upper()}):'
             file_path = f'keypoints/{label.lower()}.csv'
             raw_df = pd.read_csv(file_path)
-            for _, row in raw_df.iterrows():
+            row_count, _ = raw_df.shape
+            for i, row in raw_df.iterrows():
                 distances = calculate_distance(row)
                 new_row = {'label': label_index,
                            'distance_4_0': distances[0],
@@ -39,6 +41,7 @@ class DistanceExtractor:
                            'distance_16_20': distances[8]}
                 self.df = pd.concat(
                     [self.df, pd.DataFrame([new_row])], ignore_index=True)
+                printProgressBar(i + 1, row_count,prefix=progress_prefix, suffix='Complete', length=50)        
         if not os.path.exists('distance'):
             os.makedirs('distance')
         self.df.to_csv(r'distance/data.csv', index=False)

@@ -17,6 +17,8 @@ class DatasetAnnotator:
         os.makedirs(f"{keypoints_directory_path}/", exist_ok=True)
         header = [f"Keypoint_{i}" for i in range(21)]
         for class_label in classes:
+            if os.path.isfile(f'{keypoints_directory_path}/{class_label.upper()}.csv'):
+                continue
             rows = []
             total_files = len(os.listdir(f'dataset/{class_label}'))
             progress_prefix = f'Extracting landmarks for class ({class_label.upper()}):'

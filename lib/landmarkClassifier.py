@@ -50,5 +50,8 @@ class LandmarkClassifier:
         distances = np.expand_dims(distances, axis=0)
         prediction = self.classifer.predict_proba(distances)[0]
         max_index = np.argmax(prediction)
+        prob = prediction[max_index]
+        if prob < 0.5:
+            return ''
         sign = LABELS[max_index]
-        return f'{sign} (%{int(prediction[max_index]*100)})'
+        return f'{sign} (%{int(prob*100)})'
