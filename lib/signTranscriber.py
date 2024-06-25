@@ -36,7 +36,7 @@ class SignTranscriber:
                             image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
                         result = classifier.predict(landmarks)
                         wrist_landmark = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST]
-                        h, w, c = image.shape
+                        h, w, _ = image.shape
                         wrist_coords = (int(wrist_landmark.x * w),
                                         int(wrist_landmark.y * h))
                         cv2.putText(image, result, wrist_coords,
