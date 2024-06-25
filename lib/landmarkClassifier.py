@@ -48,6 +48,7 @@ class LandmarkClassifier:
             self.load_classifier()
         distances = calculate_distance(landmarks)
         distances = np.expand_dims(distances, axis=0)
-        prediction = self.classifer.predict(distances)[0]
-        sign = LABELS[prediction]
-        return sign
+        prediction = self.classifer.predict_proba(distances)[0]
+        max_index = np.argmax(prediction)
+        sign = LABELS[max_index]
+        return f'{sign} (%{int(prediction[max_index]*100)})'
