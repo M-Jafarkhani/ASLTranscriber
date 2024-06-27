@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 import numpy as np
-from lib.util import LABELS, calculate_distance
+from lib.util import LABELS, calculate_distance, scale_rows
 import tensorflow as tf
 
 
@@ -19,8 +19,10 @@ class LandmarkClassifier:
         df = pd.read_csv(r'distance/data.csv', index_col=False)
         X = df.drop(['label'], axis=1).copy()
         y = df.pop('label').copy().astype('int')
+        scaled_data = scale_rows(X.values)
+        X = pd.DataFrame(scaled_data, columns=X.columns)
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.25, random_state=9)
+            X, y, test_size=0.50, random_state=9)
         classifier = RandomForestClassifier()
         classifier.fit(X_train, y_train)
         score = classifier.score(X_test, y_test)
@@ -47,8 +49,9 @@ class LandmarkClassifier:
         if self.classifer == None:
             self.load_classifier()
         distances = calculate_distance(landmarks)
-        distances = np.expand_dims(distances, axis=0)
-        prediction = self.classifer.predict_proba(distances)[0]
+        scaled_data = scale_rows(np.array([distances]))
+        scaled_data = np.expand_dims(scaled_data[0], axis=0)
+        prediction = self.classifer.predict_proba(scaled_data)[0]
         max_index = np.argmax(prediction)
         prob = prediction[max_index]
         if prob < 0.5:

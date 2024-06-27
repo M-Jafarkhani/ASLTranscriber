@@ -34,7 +34,7 @@ class SignTranscriber:
                         landmarks_list.append(landmarks)
                         mp_drawing.draw_landmarks(
                             image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-                        result = classifier.predict(landmarks)
+                        result = classifier.new_predict(landmarks)
                         wrist_landmark = hand_landmarks.landmark[mp_hands.HandLandmark.WRIST]
                         h, w, _ = image.shape
                         wrist_coords = (int(wrist_landmark.x * w),
