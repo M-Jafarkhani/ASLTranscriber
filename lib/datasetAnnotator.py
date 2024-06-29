@@ -10,23 +10,26 @@ class DatasetAnnotator:
         self.handLandmarker = HandLandmarker()
 
     def annotate(self):
-        items = os.listdir('dataset')
+        items = os.listdir('dataset2')
         classes = [item for item in items if os.path.isdir(
-            os.path.join('dataset', item))]
-        keypoints_directory_path = os.path.join(os.getcwd() + '/keypoints')
+            os.path.join('dataset2', item))]
+        keypoints_directory_path = os.path.join(os.getcwd() + '/keypoints2')
         os.makedirs(f"{keypoints_directory_path}/", exist_ok=True)
         header = [f"Keypoint_{i}" for i in range(21)]
         for class_label in classes:
             if os.path.isfile(f'{keypoints_directory_path}/{class_label.upper()}.csv'):
                 continue
             rows = []
-            total_files = len(os.listdir(f'dataset/{class_label}'))
+            total_files = len(os.listdir(f'dataset2/{class_label}'))
             progress_prefix = f'Extracting landmarks for class ({class_label.upper()}):'
-            for file_index, file_name in enumerate(os.listdir(f'dataset/{class_label}')):
+            for file_index, file_name in enumerate(os.listdir(f'dataset2/{class_label}')):
                 if '.DS_Store' in file_name:
                     continue
+                img = cv2.imread(f'dataset2/{class_label}/{file_name}')
+                height, width = img.shape[:2]
+                
                 detection_result = self.handLandmarker.detect_landmark_from_file(
-                    f'dataset/{class_label}/{file_name}')
+                    f'dataset2/{class_label}/{file_name}')
                 if (len(detection_result.hand_landmarks) > 0):
                     new_row = []
                     for _, normalizedLandmark in enumerate(detection_result.hand_landmarks[0]):

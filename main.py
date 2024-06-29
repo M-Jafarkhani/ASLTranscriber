@@ -12,8 +12,8 @@ def main():
     # distanceExtractor = DistanceExtractor()
     # distanceExtractor.extract()
 
-    # classifier = LandmarkClassifier()
-    # classifier.classify()
+    classifier = LandmarkClassifier()
+    classifier.classify()
 
     transcriber = SignTranscriber()
     transcriber.transcribe()

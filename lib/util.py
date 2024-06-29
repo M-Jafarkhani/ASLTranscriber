@@ -2,6 +2,7 @@ from scipy.spatial import distance
 import ast
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import math
 
 LABELS = {
     0: 'A',
@@ -34,6 +35,49 @@ LABELS = {
 }
 
 
+def calculate_angle(P1, P2, P3):
+
+    if type(P1) == str:
+        P1 = ast.literal_eval(P1)
+        P2 = ast.literal_eval(P2)
+        P3 = ast.literal_eval(P3)
+
+    # Unpack the points
+    x1 = P1[0]
+    y1 = P1[1]
+
+    x2 = P2[0]
+    y2 = P2[1]
+
+    x3 = P3[0]
+    y3 = P3[1]
+
+    # Calculate the vectors
+    v1 = (x2 - x1, y2 - y1)
+    v2 = (x3 - x2, y3 - y2)
+
+    # Dot product of v1 and v2
+    dot_product = v1[0] * v2[0] + v1[1] * v2[1]
+
+    # Magnitudes of v1 and v2
+    magnitude_v1 = math.sqrt(v1[0]**2 + v1[1]**2)
+    magnitude_v2 = math.sqrt(v2[0]**2 + v2[1]**2)
+
+    # Cosine of the angle
+    cos_theta = dot_product / (magnitude_v1 * magnitude_v2)
+
+    # Ensure the cosine value is within the valid range [-1, 1] to avoid numerical issues
+    cos_theta = max(-1, min(1, cos_theta))
+
+    # Angle in radians
+    angle_radians = math.acos(cos_theta)
+
+    # Convert the angle to degrees
+    angle_degrees = math.degrees(angle_radians)
+
+    return angle_degrees#min(angle_degrees, 180 - angle_degrees)
+
+
 def euclidean_distance(landmark_1, landmark_2):
     if type(landmark_1) == str:
         landmark_1 = ast.literal_eval(landmark_1)
@@ -64,10 +108,13 @@ def calculate_distance(landmark):
             distance_12_16,
             distance_16_20]
 
+
 def scale_rows(data):
     scaler = StandardScaler()
-    scaled_data = np.array([scaler.fit_transform(row.reshape(-1, 1)).flatten() for row in data])
+    scaled_data = np.array([scaler.fit_transform(
+        row.reshape(-1, 1)).flatten() for row in data])
     return scaled_data
+
 
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
     """
