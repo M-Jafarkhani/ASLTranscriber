@@ -1,7 +1,6 @@
 from lib.datasetAnnotator import DatasetAnnotator
-from lib.distanceExtractor import DistanceExtractor
-from lib.handLandmarker import HandLandmarker
-from lib.landmarkClassifier import LandmarkClassifier
+from lib.featuresExtractor import FeaturesExtractor
+from lib.landmarkDetector import LandmarkDetector
 from lib.signTranscriber import SignTranscriber
 
 
@@ -9,11 +8,11 @@ def main():
     # datasetAnnotator = DatasetAnnotator()
     # datasetAnnotator.annotate()
 
-    # distanceExtractor = DistanceExtractor()
-    # distanceExtractor.extract()
+    # featuresExtractor = FeaturesExtractor()
+    # featuresExtractor.extract()
 
-    classifier = LandmarkClassifier()
-    classifier.classify()
+    # detector = LandmarkDetector()
+    # detector.classify()
 
     transcriber = SignTranscriber()
     transcriber.transcribe()

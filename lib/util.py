@@ -1,7 +1,5 @@
 from scipy.spatial import distance
 import ast
-import numpy as np
-from sklearn.preprocessing import StandardScaler
 import math
 
 LABELS = {
@@ -30,19 +28,15 @@ LABELS = {
     22: 'W',
     23: 'X',
     24: 'Y',
-    25: 'Z',
-    26: '_'
+    25: 'Z'
 }
 
-
 def calculate_angle(P1, P2, P3):
-
     if type(P1) == str:
         P1 = ast.literal_eval(P1)
         P2 = ast.literal_eval(P2)
         P3 = ast.literal_eval(P3)
 
-    # Unpack the points
     x1 = P1[0]
     y1 = P1[1]
 
@@ -52,30 +46,19 @@ def calculate_angle(P1, P2, P3):
     x3 = P3[0]
     y3 = P3[1]
 
-    # Calculate the vectors
     v1 = (x2 - x1, y2 - y1)
     v2 = (x3 - x2, y3 - y2)
 
-    # Dot product of v1 and v2
     dot_product = v1[0] * v2[0] + v1[1] * v2[1]
 
-    # Magnitudes of v1 and v2
     magnitude_v1 = math.sqrt(v1[0]**2 + v1[1]**2)
     magnitude_v2 = math.sqrt(v2[0]**2 + v2[1]**2)
 
-    # Cosine of the angle
     cos_theta = dot_product / (magnitude_v1 * magnitude_v2)
-
-    # Ensure the cosine value is within the valid range [-1, 1] to avoid numerical issues
     cos_theta = max(-1, min(1, cos_theta))
-
-    # Angle in radians
     angle_radians = math.acos(cos_theta)
 
-    # Convert the angle to degrees
-    angle_degrees = math.degrees(angle_radians)
-
-    return angle_degrees#min(angle_degrees, 180 - angle_degrees)
+    return math.degrees(angle_radians)
 
 
 def euclidean_distance(landmark_1, landmark_2):
@@ -86,34 +69,37 @@ def euclidean_distance(landmark_1, landmark_2):
     return distance.euclidean([landmark_1[0], landmark_1[1]], [landmark_2[0], landmark_2[1]])
 
 
-def calculate_distance(landmark):
-    distance_4_0 = euclidean_distance(landmark[4], landmark[0])
-    distance_8_0 = euclidean_distance(landmark[8], landmark[0])
-    distance_12_0 = euclidean_distance(landmark[12], landmark[0])
-    distance_16_0 = euclidean_distance(landmark[16], landmark[0])
-    distance_20_0 = euclidean_distance(landmark[20], landmark[0])
-
-    distance_4_8 = euclidean_distance(landmark[4], landmark[8])
-    distance_8_12 = euclidean_distance(landmark[8], landmark[12])
-    distance_12_16 = euclidean_distance(landmark[12], landmark[16])
-    distance_16_20 = euclidean_distance(landmark[16], landmark[20])
-
-    return [distance_4_0,
-            distance_8_0,
-            distance_12_0,
-            distance_16_0,
-            distance_20_0,
-            distance_4_8,
-            distance_8_12,
-            distance_12_16,
-            distance_16_20]
+def get_distance(landmark):
+    return {'d_4_0': euclidean_distance(landmark[4], landmark[0]),
+            'd_8_0': euclidean_distance(landmark[8], landmark[0]),
+            'd_12_0': euclidean_distance(landmark[12], landmark[0]),
+            'd_16_0': euclidean_distance(landmark[16], landmark[0]),
+            'd_20_0': euclidean_distance(landmark[20], landmark[0]),
+            'd_4_8': euclidean_distance(landmark[4], landmark[8]),
+            'd_8_12': euclidean_distance(landmark[8], landmark[12]),
+            'd_12_16': euclidean_distance(landmark[12], landmark[16]),
+            'd_16_20': euclidean_distance(landmark[16], landmark[20])}
 
 
-def scale_rows(data):
-    scaler = StandardScaler()
-    scaled_data = np.array([scaler.fit_transform(
-        row.reshape(-1, 1)).flatten() for row in data])
-    return scaled_data
+def get_angles(landmark):
+    return {'a_0_1_2': calculate_angle(landmark[0], landmark[1], landmark[2]),
+            'a_1_2_3': calculate_angle(landmark[1], landmark[2], landmark[3]),
+            'a_2_3_4': calculate_angle(landmark[2], landmark[3], landmark[4]),
+            'a_0_5_6': calculate_angle(landmark[0], landmark[5], landmark[6]),
+            'a_5_6_7': calculate_angle(landmark[5], landmark[6], landmark[7]),
+            'a_6_7_8': calculate_angle(landmark[6], landmark[7], landmark[8]),
+            'a_6_5_9': calculate_angle(landmark[6], landmark[5], landmark[9]),
+            'a_5_9_10': calculate_angle(landmark[5], landmark[9], landmark[10]),
+            'a_9_10_11': calculate_angle(landmark[9], landmark[10], landmark[11]),
+            'a_10_11_12': calculate_angle(landmark[10], landmark[11], landmark[12]),
+            'a_9_13_14': calculate_angle(landmark[9], landmark[13], landmark[14]),
+            'a_13_14_15': calculate_angle(landmark[13], landmark[14], landmark[15]),
+            'a_14_15_16': calculate_angle(landmark[14], landmark[15], landmark[16]),
+            'a_14_13_17': calculate_angle(landmark[14], landmark[13], landmark[17]),
+            'a_13_17_18': calculate_angle(landmark[13], landmark[17], landmark[18]),
+            'a_17_18_19': calculate_angle(landmark[17], landmark[18], landmark[19]),
+            'a_18_19_20': calculate_angle(landmark[18], landmark[19], landmark[20]),
+            'a_0_17_18': calculate_angle(landmark[0], landmark[17], landmark[18])}
 
 
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
