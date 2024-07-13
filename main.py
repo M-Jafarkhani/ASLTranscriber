@@ -5,6 +5,7 @@ from lib.signTranscriber import SignTranscriber
 
 
 def main():
+    
     # datasetAnnotator = DatasetAnnotator()
     # datasetAnnotator.annotate()
 
