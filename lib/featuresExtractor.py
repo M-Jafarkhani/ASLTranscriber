@@ -1,5 +1,5 @@
 import os
-from lib.util import LABELS, get_angles, get_distance, printProgressBar
+from lib.util import *
 import pandas as pd
 
 
@@ -30,5 +30,6 @@ class FeaturesExtractor:
     def get_features(self, landmarks, label_index=None):
         new_row = {'label': label_index}
         new_row.update(get_distance(landmarks))
-        new_row.update(get_angles(landmarks))
+        # new_row.update(get_angles(landmarks))
+        # new_row.update(get_points(landmarks))
         return new_row

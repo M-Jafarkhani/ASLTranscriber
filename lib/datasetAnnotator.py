@@ -34,7 +34,7 @@ class DatasetAnnotator:
                     new_row = []
                     for _, normalizedLandmark in enumerate(detection_result.hand_landmarks[0]):
                         new_row.append(
-                            [normalizedLandmark.x, normalizedLandmark.y])
+                            [normalizedLandmark.x, normalizedLandmark.y, normalizedLandmark.z])
                     rows.append(new_row)
                 printProgressBar(file_index + 1, total_files,
                                  prefix=progress_prefix, suffix='Complete', length=50)
