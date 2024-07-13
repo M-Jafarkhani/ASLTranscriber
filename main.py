@@ -12,8 +12,8 @@ def main():
     # featuresExtractor = FeaturesExtractor()
     # featuresExtractor.extract()
 
-    # detector = LandmarkDetector()
-    # detector.classify()
+    detector = LandmarkDetector()
+    detector.classify()
 
     transcriber = SignTranscriber()
     transcriber.transcribe()
