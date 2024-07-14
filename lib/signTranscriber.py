@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 from lib.landmarkDetector import LandmarkDetector
-
+from lib.util import calculate_angle
 
 class SignTranscriber:
     def __init__(self):
@@ -33,6 +33,10 @@ class SignTranscriber:
                             image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
                         result = self.detector.predict_with_classifier(
                             landmarks)
+                        # P4 = [hand_landmarks.landmark[4].x,hand_landmarks.landmark[4].y]
+                        # P0 = [hand_landmarks.landmark[0].x,hand_landmarks.landmark[0].y]
+                        # P8 = [hand_landmarks.landmark[8].x,hand_landmarks.landmark[8].y]
+                        #result = str(calculate_angle(P4,P0,P8))
                         #result = f'X = {round(hand_landmarks.landmark[4].x,2)},Y = {round(hand_landmarks.landmark[4].y,2)},Z = {round(hand_landmarks.landmark[4].z,2)}'
                         wrist_landmark = hand_landmarks.landmark[self.mp_hands.HandLandmark.WRIST]
                         h, w, _ = image.shape

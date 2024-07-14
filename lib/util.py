@@ -67,9 +67,9 @@ def calculate_angle(P1, P2, P3):
     cos_theta = dot_product / (magnitude_v1 * magnitude_v2)
     cos_theta = max(-1, min(1, cos_theta))
     angle_radians = math.acos(cos_theta)
-    
+    degree = math.degrees(angle_radians)
 
-    return math.degrees(angle_radians)
+    return min(degree,180-degree)
 
 
 def euclidean_distance(landmark_1, landmark_2):
@@ -101,44 +101,33 @@ def get_distance(landmark):
             'd_8_12': euclidean_distance(landmark[8], landmark[12]),
             'd_12_16': euclidean_distance(landmark[12], landmark[16]),
             'd_16_20': euclidean_distance(landmark[16], landmark[20]),
+            'd_4_12': euclidean_distance(landmark[4], landmark[12]),
+            'd_4_16': euclidean_distance(landmark[4], landmark[16]),
+            'd_4_20': euclidean_distance(landmark[4], landmark[20])
             
-            'd_3_7': euclidean_distance(landmark[3], landmark[7]),
-            'd_6_2': euclidean_distance(landmark[6], landmark[2]),
-            'd_5_1': euclidean_distance(landmark[5], landmark[1]),
+            # 'd_3_7': euclidean_distance(landmark[3], landmark[7]),
+            # 'd_6_2': euclidean_distance(landmark[6], landmark[2]),
+            # 'd_5_1': euclidean_distance(landmark[5], landmark[1]),
 
-            'd_7_11': euclidean_distance(landmark[7], landmark[11]),
-            'd_6_10': euclidean_distance(landmark[6], landmark[10]),
-            'd_5_9': euclidean_distance(landmark[5], landmark[9]),
+            # 'd_7_11': euclidean_distance(landmark[7], landmark[11]),
+            # 'd_6_10': euclidean_distance(landmark[6], landmark[10]),
+            # 'd_5_9': euclidean_distance(landmark[5], landmark[9]),
 
-            'd_11_15': euclidean_distance(landmark[11], landmark[15]),
-            'd_10_14': euclidean_distance(landmark[10], landmark[14]),
-            'd_9_13': euclidean_distance(landmark[9], landmark[13]),
+            # 'd_11_15': euclidean_distance(landmark[11], landmark[15]),
+            # 'd_10_14': euclidean_distance(landmark[10], landmark[14]),
+            # 'd_9_13': euclidean_distance(landmark[9], landmark[13]),
 
-            'd_15_19': euclidean_distance(landmark[15], landmark[19]),
-            'd_14_18': euclidean_distance(landmark[14], landmark[18]),
-            'd_13_17': euclidean_distance(landmark[13], landmark[17])
+            # 'd_15_19': euclidean_distance(landmark[15], landmark[19]),
+            # 'd_14_18': euclidean_distance(landmark[14], landmark[18]),
+            # 'd_13_17': euclidean_distance(landmark[13], landmark[17])
             }
 
 
 def get_angles(landmark):
-    return {'a_0_1_2': calculate_angle(landmark[0], landmark[1], landmark[2]),
-            'a_1_2_3': calculate_angle(landmark[1], landmark[2], landmark[3]),
-            'a_2_3_4': calculate_angle(landmark[2], landmark[3], landmark[4]),
-            'a_0_5_6': calculate_angle(landmark[0], landmark[5], landmark[6]),
-            'a_5_6_7': calculate_angle(landmark[5], landmark[6], landmark[7]),
-            'a_6_7_8': calculate_angle(landmark[6], landmark[7], landmark[8]),
-            'a_6_5_9': calculate_angle(landmark[6], landmark[5], landmark[9]),
-            'a_5_9_10': calculate_angle(landmark[5], landmark[9], landmark[10]),
-            'a_9_10_11': calculate_angle(landmark[9], landmark[10], landmark[11]),
-            'a_10_11_12': calculate_angle(landmark[10], landmark[11], landmark[12]),
-            'a_9_13_14': calculate_angle(landmark[9], landmark[13], landmark[14]),
-            'a_13_14_15': calculate_angle(landmark[13], landmark[14], landmark[15]),
-            'a_14_15_16': calculate_angle(landmark[14], landmark[15], landmark[16]),
-            'a_14_13_17': calculate_angle(landmark[14], landmark[13], landmark[17]),
-            'a_13_17_18': calculate_angle(landmark[13], landmark[17], landmark[18]),
-            'a_17_18_19': calculate_angle(landmark[17], landmark[18], landmark[19]),
-            'a_18_19_20': calculate_angle(landmark[18], landmark[19], landmark[20]),
-            'a_0_17_18': calculate_angle(landmark[0], landmark[17], landmark[18])}
+    return {'a_4_0_8': calculate_angle(landmark[4], landmark[0], landmark[8]),
+            'a_8_0_12': calculate_angle(landmark[8], landmark[0], landmark[12]),
+            'a_12_0_16': calculate_angle(landmark[12], landmark[0], landmark[16]),
+            'a_16_0_20': calculate_angle(landmark[16], landmark[0], landmark[20])}
 
 def get_points(landmark):
     return {'x_0': get_x(landmark[0]),

@@ -9,8 +9,8 @@ def main():
     # datasetAnnotator = DatasetAnnotator()
     # datasetAnnotator.annotate()
 
-    # featuresExtractor = FeaturesExtractor()
-    # featuresExtractor.extract()
+    featuresExtractor = FeaturesExtractor()
+    featuresExtractor.extract()
 
     detector = LandmarkDetector()
     detector.classify()

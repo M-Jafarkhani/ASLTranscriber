@@ -30,6 +30,6 @@ class FeaturesExtractor:
     def get_features(self, landmarks, label_index=None):
         new_row = {'label': label_index}
         new_row.update(get_distance(landmarks))
-        # new_row.update(get_angles(landmarks))
+        new_row.update(get_angles(landmarks))
         # new_row.update(get_points(landmarks))
         return new_row
