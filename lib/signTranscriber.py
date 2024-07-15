@@ -34,7 +34,6 @@ class SignTranscriber:
                             image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
                         result = self.detector.predict_with_rf(
                             handedness.classification[0].label[0], landmarks)
-                        #result = str(get_palm_state(handedness.classification[0].label[0], landmarks)['p'])
                         wrist_landmark = hand_landmarks.landmark[self.mp_hands.HandLandmark.WRIST]
                         h, w, _ = image.shape
                         wrist_coords = (int(wrist_landmark.x * w),

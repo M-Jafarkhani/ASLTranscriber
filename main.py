@@ -12,11 +12,11 @@ def main():
     # featuresExtractor = FeaturesExtractor()
     # featuresExtractor.extract()
 
-    # detector = LandmarkDetector()
-    # detector.classify()
+    detector = LandmarkDetector()
+    detector.classify()
 
-    transcriber = SignTranscriber()
-    transcriber.transcribe()
+    # transcriber = SignTranscriber()
+    # transcriber.transcribe()
 
 if __name__ == "__main__":
     main()
