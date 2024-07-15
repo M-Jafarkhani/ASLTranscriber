@@ -6,8 +6,8 @@ from lib.signTranscriber import SignTranscriber
 
 def main():
     
-    # datasetAnnotator = DatasetAnnotator()
-    # datasetAnnotator.annotate()
+    datasetAnnotator = DatasetAnnotator()
+    datasetAnnotator.annotate()
 
     # featuresExtractor = FeaturesExtractor()
     # featuresExtractor.extract()
@@ -15,8 +15,8 @@ def main():
     # detector = LandmarkDetector()
     # detector.classify()
 
-    transcriber = SignTranscriber()
-    transcriber.transcribe()
+    # transcriber = SignTranscriber()
+    # transcriber.transcribe()
 
 if __name__ == "__main__":
     main()

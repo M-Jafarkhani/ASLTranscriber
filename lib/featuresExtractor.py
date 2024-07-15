@@ -31,4 +31,5 @@ class FeaturesExtractor:
         new_row = {'label': label_index}
         new_row.update(get_distance(landmarks))
         new_row.update(get_angles(landmarks))
+        new_row.update(get_direction(landmarks))
         return new_row

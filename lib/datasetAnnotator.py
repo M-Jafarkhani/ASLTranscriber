@@ -18,6 +18,7 @@ class DatasetAnnotator:
             os.getcwd() + f'/{self.keypoints_folder}')
         os.makedirs(f"{keypoints_directory_path}/", exist_ok=True)
         header = [f"Keypoint_{i}" for i in range(21)]
+        header.insert(0, "Handedness")
         for class_label in classes:
             if os.path.isfile(f'{keypoints_directory_path}/{class_label.upper()}.csv'):
                 continue
@@ -31,7 +32,8 @@ class DatasetAnnotator:
                 detection_result = self.handLandmarker.detect_landmark_from_file(
                     f'{self.dataset_folder}/{class_label}/{file_name}')
                 if (len(detection_result.hand_landmarks) > 0):
-                    new_row = []
+                    new_row = [detection_result.handedness[0]
+                               [0].display_name[0]]
                     for _, normalizedLandmark in enumerate(detection_result.hand_landmarks[0]):
                         new_row.append(
                             [normalizedLandmark.x, normalizedLandmark.y, normalizedLandmark.z])

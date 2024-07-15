@@ -23,15 +23,18 @@ class SignTranscriber:
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 landmarks_list = []
                 if results.multi_hand_landmarks:
-                    for hand_landmarks in results.multi_hand_landmarks:
+                    for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
                         landmarks = []
                         for lm in hand_landmarks.landmark:
                             landmarks.append([lm.x, lm.y, lm.z])
                         landmarks_list.append(landmarks)
                         self.mp_drawing.draw_landmarks(
                             image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
-                        result = self.detector.predict_with_classifier(
-                            landmarks)
+                        # result = self.detector.predict_with_classifier(
+                        #     landmarks)
+                        result = handedness.classification[0].label
+                        #result = "A" if (hand_landmarks.landmark[4].x - hand_landmarks.landmark[20].x) > 0 else "B"
+                        #result = str(hand_landmarks.landmark[4].z)
                         wrist_landmark = hand_landmarks.landmark[self.mp_hands.HandLandmark.WRIST]
                         h, w, _ = image.shape
                         wrist_coords = (int(wrist_landmark.x * w),

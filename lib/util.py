@@ -41,6 +41,7 @@ LABELS = {
     35: '10'
 }
 
+
 def calculate_angle(P1, P2, P3):
     if type(P1) == str:
         P1 = ast.literal_eval(P1)
@@ -69,7 +70,7 @@ def calculate_angle(P1, P2, P3):
     angle_radians = math.acos(cos_theta)
     degree = math.degrees(angle_radians)
 
-    return min(degree,180-degree)
+    return min(degree, 180-degree)
 
 
 def euclidean_distance(landmark_1, landmark_2):
@@ -79,17 +80,13 @@ def euclidean_distance(landmark_1, landmark_2):
 
     return distance.euclidean([landmark_1[0], landmark_1[1]], [landmark_2[0], landmark_2[1]])
 
-def get_x(landmark):
+
+def direction(landmark):
     if type(landmark) == str:
         landmark = ast.literal_eval(landmark)
 
-    return landmark[0]
+    return 1 if landmark[2] > 0 else -1
 
-def get_y(landmark):
-    if type(landmark) == str:
-        landmark = ast.literal_eval(landmark)
-
-    return landmark[1]
 
 def get_distance(landmark):
     return {'d_4_0': euclidean_distance(landmark[4], landmark[0]),
@@ -112,6 +109,14 @@ def get_angles(landmark):
             'a_8_0_12': calculate_angle(landmark[8], landmark[0], landmark[12]),
             'a_12_0_16': calculate_angle(landmark[12], landmark[0], landmark[16]),
             'a_16_0_20': calculate_angle(landmark[16], landmark[0], landmark[20])}
+
+
+def get_direction(landmark):
+    return {'z_4': direction(landmark[4]),
+            'z_8': direction(landmark[8]),
+            'z_12': direction(landmark[12]),
+            'z_16': direction(landmark[16]),
+            'z_20': direction(landmark[20])}
 
 
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
