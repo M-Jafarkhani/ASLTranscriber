@@ -59,7 +59,7 @@ class LandmarkDetector:
         predict_result = self.cnn_model.predict(np.array([features_list]))
         return LABELS[np.argmax(np.squeeze(predict_result))]
 
-    def predict_with_classifier(self, handedness, landmarks):
+    def predict_with_rf(self, handedness, landmarks):
         if self.classifier_model == None:
             self.load_classifier()
         features = self.featuresExtractor.get_features(handedness, landmarks)

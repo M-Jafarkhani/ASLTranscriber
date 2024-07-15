@@ -32,7 +32,7 @@ class SignTranscriber:
                         landmarks_list.append(landmarks)
                         self.mp_drawing.draw_landmarks(
                             image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
-                        result = self.detector.predict_with_classifier(
+                        result = self.detector.predict_with_rf(
                             handedness.classification[0].label[0], landmarks)
                         #result = str(get_palm_state(handedness.classification[0].label[0], landmarks)['p'])
                         wrist_landmark = hand_landmarks.landmark[self.mp_hands.HandLandmark.WRIST]
