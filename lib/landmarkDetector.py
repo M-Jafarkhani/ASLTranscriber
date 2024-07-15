@@ -49,20 +49,20 @@ class LandmarkDetector:
         self.cnn_model.compile(
             optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    def predict_with_cnn(self, landmarks):
+    def predict_with_cnn(self, handedness, landmarks):
         if self.cnn_model == None:
             self.load_cnn()
-        features = self.featuresExtractor.get_features(landmarks)
+        features = self.featuresExtractor.get_features(handedness, landmarks)
         features_df = pd.DataFrame([features])
         features_df = features_df.drop(columns=['label'])
         features_list = features_df.iloc[0].tolist()
         predict_result = self.cnn_model.predict(np.array([features_list]))
         return LABELS[np.argmax(np.squeeze(predict_result))]
 
-    def predict_with_classifier(self, landmarks):
+    def predict_with_classifier(self, handedness, landmarks):
         if self.classifier_model == None:
             self.load_classifier()
-        features = self.featuresExtractor.get_features(landmarks)
+        features = self.featuresExtractor.get_features(handedness, landmarks)
         features_df = pd.DataFrame([features])
         features_df = features_df.drop(columns=['label'])
         features_list = features_df.iloc[0].tolist()

@@ -17,7 +17,8 @@ class FeaturesExtractor:
             raw_df = pd.read_csv(file_path)
             row_count, _ = raw_df.shape
             for i, row in raw_df.iterrows():
-                new_row = self.get_features(row, label_index)
+                new_row = self.get_features(
+                    row[0], row[1:], label_index, flipped=False)
                 self.df = pd.concat(
                     [self.df, pd.DataFrame([new_row])], ignore_index=True)
                 printProgressBar(
@@ -27,9 +28,9 @@ class FeaturesExtractor:
         self.df.to_csv(
             f'{self.features_folder}/{self.features_file}.csv', index=False)
 
-    def get_features(self, landmarks, label_index=None):
+    def get_features(self, handedness, landmarks, label_index=None):
         new_row = {'label': label_index}
+        new_row.update(get_palm_state(handedness, landmarks))
         new_row.update(get_distance(landmarks))
         new_row.update(get_angles(landmarks))
-        new_row.update(get_direction(landmarks))
         return new_row

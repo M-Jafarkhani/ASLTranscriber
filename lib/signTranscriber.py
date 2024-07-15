@@ -1,6 +1,8 @@
 import cv2
 import mediapipe as mp
 from lib.landmarkDetector import LandmarkDetector
+from lib.util import get_palm_state
+
 
 class SignTranscriber:
     def __init__(self):
@@ -30,11 +32,9 @@ class SignTranscriber:
                         landmarks_list.append(landmarks)
                         self.mp_drawing.draw_landmarks(
                             image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
-                        # result = self.detector.predict_with_classifier(
-                        #     landmarks)
-                        result = handedness.classification[0].label
-                        #result = "A" if (hand_landmarks.landmark[4].x - hand_landmarks.landmark[20].x) > 0 else "B"
-                        #result = str(hand_landmarks.landmark[4].z)
+                        result = self.detector.predict_with_classifier(
+                            handedness.classification[0].label[0], landmarks)
+                        #result = str(get_palm_state(handedness.classification[0].label[0], landmarks)['p'])
                         wrist_landmark = hand_landmarks.landmark[self.mp_hands.HandLandmark.WRIST]
                         h, w, _ = image.shape
                         wrist_coords = (int(wrist_landmark.x * w),

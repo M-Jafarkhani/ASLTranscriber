@@ -80,12 +80,25 @@ def euclidean_distance(landmark_1, landmark_2):
 
     return distance.euclidean([landmark_1[0], landmark_1[1]], [landmark_2[0], landmark_2[1]])
 
+def get_palm_state(handedness, landmarks):
+    landmark_0 = landmarks[0]
+    landmark_5 = landmarks[5]
+    landmark_17 = landmarks[17]
+    
+    if type(landmark_0) == str:
+        landmark_0 = ast.literal_eval(landmark_0)
+        landmark_5 = ast.literal_eval(landmark_5)
+        landmark_17 = ast.literal_eval(landmark_17)
 
-def direction(landmark):
-    if type(landmark) == str:
-        landmark = ast.literal_eval(landmark)
+    vector_1 = (landmark_5[0] - landmark_0[0], landmark_5[1] - landmark_0[1])
+    vector_2 = (landmark_17[0] - landmark_0[0], landmark_17[1] - landmark_0[1])
 
-    return 1 if landmark[2] > 0 else -1
+    cross_product = vector_1[0] * vector_2[1] - vector_1[1] * vector_2[0]
+
+    if handedness == "R":
+        return {'p': -1} if cross_product > 0 else {'p': 1}
+    else:
+        return {'p': -1} if cross_product < 0 else {'p': 1}
 
 
 def get_distance(landmark):
