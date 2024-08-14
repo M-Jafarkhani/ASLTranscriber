@@ -11,7 +11,7 @@ import tensorflow as tf
 
 class LandmarkDetector:
     classifier_model = None
-    cnn_model = None
+    dnn_model = None
     featuresExtractor = None
 
     def __init__(self):
@@ -20,7 +20,7 @@ class LandmarkDetector:
         self.features_file = 'data'
         self.models_folder = 'models'
         self.classifier_model_file = 'ASL_RF'
-        self.network_model_file = 'ASL_CNN'
+        self.network_model_file = 'ASL_DNN'
 
     def classify(self):
         df = pd.read_csv(
@@ -43,20 +43,20 @@ class LandmarkDetector:
         self.classifier_model = joblib.load(
             f'{self.models_folder}/{self.classifier_model_file}.pkl')
 
-    def load_cnn(self):
-        self.cnn_model = tf.keras.models.load_model(
+    def load_dnn(self):
+        self.dnn_model_model = tf.keras.models.load_model(
             f'{self.models_folder}/{self.network_model_file}.hdf5', compile=False)
-        self.cnn_model.compile(
+        self.dnn_model.compile(
             optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    def predict_with_cnn(self, handedness, landmarks):
-        if self.cnn_model == None:
-            self.load_cnn()
+    def predict_with_dnn(self, handedness, landmarks):
+        if self.dnn_model == None:
+            self.load_dnn()
         features = self.featuresExtractor.get_features(handedness, landmarks)
         features_df = pd.DataFrame([features])
         features_df = features_df.drop(columns=['label'])
         features_list = features_df.iloc[0].tolist()
-        predict_result = self.cnn_model.predict(np.array([features_list]))
+        predict_result = self.dnn_model.predict(np.array([features_list]))
         return LABELS[np.argmax(np.squeeze(predict_result))]
 
     def predict_with_rf(self, handedness, landmarks):
