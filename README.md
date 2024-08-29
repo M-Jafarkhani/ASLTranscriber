@@ -1,0 +1,1 @@
+This is the main repo for Automotive and Assistive Computer Vision course project. Using Google MediaPipe framework, it opens the camera and transcribes the hand gesture which probably resembles the ASL alphabet and digit. To run the project, install the requirements and run the main.py file.  
