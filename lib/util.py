@@ -42,7 +42,26 @@ LABELS = {
 }
 
 
-def calculate_angle(P1, P2, P3):
+def calculate_angle(P1: any, P2: any, P3: any) -> float:
+    """
+    Calculates the angle between 3 given landmarks 
+
+    Parameters
+    ----------
+    P1: any
+        First landmark
+
+    P2: any
+        Second landmark
+
+    P3: any
+        Third landmark        
+
+    Returns
+    -------
+    float
+        The minimum angle between 3 given landmarks.
+    """
     if type(P1) == str:
         P1 = ast.literal_eval(P1)
         P2 = ast.literal_eval(P2)
@@ -73,18 +92,51 @@ def calculate_angle(P1, P2, P3):
     return min(degree, 180-degree)
 
 
-def euclidean_distance(landmark_1, landmark_2):
+def euclidean_distance(landmark_1: any, landmark_2: any) -> float:
+    """
+    Calculates the euclidean distance between 2 given landmarks 
+
+    Parameters
+    ----------
+    landmark_1: any
+        First landmark
+
+    landmark_2: any
+        Second landmark       
+
+    Returns
+    -------
+    float
+        The euclidean distance between 2 given landmarks
+    """
     if type(landmark_1) == str:
         landmark_1 = ast.literal_eval(landmark_1)
         landmark_2 = ast.literal_eval(landmark_2)
 
     return distance.euclidean([landmark_1[0], landmark_1[1]], [landmark_2[0], landmark_2[1]])
 
-def get_palm_state(handedness, landmarks):
+
+def get_palm_state(handedness: str, landmarks: any) -> dict[str, int]:
+    """
+    Calculates the palm state, which indicates whether the palm of the hand is facing the camera or not
+
+    Parameters
+    ----------
+    handedness: str
+        'R' for right hand, 'L' for left hand
+
+    landmarks: any
+        Landmarks of the hand       
+
+    Returns
+    -------
+    dict[str, int]
+        A dictionary of the form {'p': x} where x is either 1 or -1. (1 for facing the camera).
+    """
     landmark_0 = landmarks[0]
     landmark_5 = landmarks[5]
     landmark_17 = landmarks[17]
-    
+
     if type(landmark_0) == str:
         landmark_0 = ast.literal_eval(landmark_0)
         landmark_5 = ast.literal_eval(landmark_5)
@@ -101,7 +153,20 @@ def get_palm_state(handedness, landmarks):
         return {'p': -1} if cross_product < 0 else {'p': 1}
 
 
-def get_distance(landmark):
+def get_distance(landmark: any) -> dict[str, float]:
+    """
+    Calculates the euclidean distance groups for one hand
+
+    Parameters
+    ----------
+    landmarks: any
+        Landmarks of the hand       
+
+    Returns
+    -------
+    dict[str, float]
+        A dictionary of the form {'d_P1_P2': D} where P1 and P2 are two landmarks, and D is the distance of P1 and P2.
+    """
     return {'d_4_0': euclidean_distance(landmark[4], landmark[0]),
             'd_8_0': euclidean_distance(landmark[8], landmark[0]),
             'd_12_0': euclidean_distance(landmark[12], landmark[0]),
@@ -117,23 +182,32 @@ def get_distance(landmark):
             }
 
 
-def get_angles(landmark):
+def get_angles(landmark: any) -> dict[str, float]:
+    """
+    Calculates the angle groups for one hand
+
+    Parameters
+    ----------
+    landmarks: any
+        Landmarks of the hand       
+
+    Returns
+    -------
+    dict[str, float]
+        A dictionary of the form {'A_P1_P2_P3': A} where P1, P2 and P3 are 3 landmarks, 
+        and A is the angle between them, such that P2 is the center.
+    """
     return {'a_4_0_8': calculate_angle(landmark[4], landmark[0], landmark[8]),
             'a_8_0_12': calculate_angle(landmark[8], landmark[0], landmark[12]),
             'a_12_0_16': calculate_angle(landmark[12], landmark[0], landmark[16]),
             'a_16_0_20': calculate_angle(landmark[16], landmark[0], landmark[20])}
 
 
-def get_direction(landmark):
-    return {'z_4': direction(landmark[4]),
-            'z_8': direction(landmark[8]),
-            'z_12': direction(landmark[12]),
-            'z_16': direction(landmark[16]),
-            'z_20': direction(landmark[20])}
-
-
-def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
+def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r") -> None:
     """
+    This code is copied from Stackoverflow, which helps to print progress bar in the terminal. Available at:
+    https://stackoverflow.com/questions/3173320/text-progress-bar-in-terminal-with-block-characters
+
     Call in a loop to create terminal progress bar
     @params:
         iteration   - Required  : current iteration (Int)

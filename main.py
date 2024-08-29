@@ -4,8 +4,18 @@ from lib.landmarkDetector import LandmarkDetector
 from lib.signTranscriber import SignTranscriber
 
 
-def main():
-    
+def main() -> None:
+    """
+    The main function to orchestrate the workflow.
+
+    Parameters
+    ----------
+    None      
+
+    Returns
+    -------
+    None
+    """        
     # datasetAnnotator = DatasetAnnotator()
     # datasetAnnotator.annotate()
 

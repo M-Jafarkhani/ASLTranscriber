@@ -1,17 +1,49 @@
 import cv2
 import mediapipe as mp
 from lib.landmarkDetector import LandmarkDetector
-from lib.util import get_palm_state
 
 
 class SignTranscriber:
-    def __init__(self):
+    """
+    A Python class for transcribing the ASL alphabet or digit
+
+    ...
+
+    Attributes
+    ----------
+    mp_hands : any
+        Function from MediaPipe which detects hands in an image
+
+    mp_drawing : any
+        Function to draw Landmarks on an image
+
+    detector : LandmarkDetector
+        An instance of class LandmarkDetector which predicts which alphabet or digit from ASL are in the image
+
+    cap : VideoCapture
+        Object for opening the camera and capture image
+
+    Methods
+    -------
+    transcribe() -> None:
+        Transcribe the ASL hand gesture from the video input 
+    """
+    def __init__(self) -> None:
         self.mp_hands = mp.solutions.hands
         self.mp_drawing = mp.solutions.drawing_utils
         self.detector = LandmarkDetector()
         self.cap = cv2.VideoCapture(0)
 
-    def transcribe(self):
+    def transcribe(self) -> None:
+        """
+        The main transcribtion process which opens the camera, detects the hand and landmarks, and 
+        predicts the alphabet or digit from ASL. The default approach is RFD. If you want to switch 
+        to DNN apprach, change the 'predict_with_rf' to 'predict_with_dnn' on line 67.
+
+        Parameters
+        ----------
+        None
+        """
         with self.mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
             while self.cap.isOpened():
                 success, image = self.cap.read()
@@ -32,7 +64,7 @@ class SignTranscriber:
                         landmarks_list.append(landmarks)
                         self.mp_drawing.draw_landmarks(
                             image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
-                        result = self.detector.predict_with_rf(
+                        result = self.detector.predict_with_dnn(
                             handedness.classification[0].label[0], landmarks)
                         wrist_landmark = hand_landmarks.landmark[self.mp_hands.HandLandmark.WRIST]
                         h, w, _ = image.shape

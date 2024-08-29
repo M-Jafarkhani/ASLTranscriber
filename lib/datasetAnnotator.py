@@ -5,12 +5,51 @@ from lib.util import printProgressBar
 
 
 class DatasetAnnotator:
-    def __init__(self):
+    """
+    A Python class for annotating train data
+
+    ...
+
+    Attributes
+    ----------
+    handLandmarker : HandLandmarker
+        Main class imported from mediapipe, which is responsible for hand-detection and landmark extraction
+    
+    dataset_folder : str
+        The folder name which corresponds to train data location
+    
+    keypoints_folder : str
+        The folder name which corresponds to extracted keypoints data location
+
+    Methods
+    -------
+    annotate() -> None:
+        Starts the data annotation process.
+    """
+        
+    def __init__(self) -> None:
+        """
+        Inits the attributes, including setting dataset_folder to 'dataset' and keypoints_folder to 'keypoints' 
+
+        Parameters
+        ----------
+        None
+        """
         self.handLandmarker = HandLandmarker()
         self.dataset_folder = 'dataset'
         self.keypoints_folder = 'keypoints'
 
-    def annotate(self):
+    def annotate(self) -> None:
+        """
+        The main annotation process. The train data are expected to be separated into their corresponding folders,
+        where each folder name corresponds to their label.
+
+        The handedness and 21 landmarks for each class are extratced and saved into one csv file.
+
+        Parameters
+        ----------
+        None
+        """
         items = os.listdir(f'{self.dataset_folder}')
         classes = [item for item in items if os.path.isdir(
             os.path.join(f'{self.dataset_folder}', item))]
